@@ -45,6 +45,8 @@ class IntakeWorkflow:
         return report_path
 
     def _assess_joint(self, analyzer: PoseAnalyzer, joint: JointDefinition, duration: float) -> SessionRecord:
+        if analyzer.display:
+            analyzer.show_preview(joint, "Press Enter in terminal to begin")
         input(
             f"\n--- {joint.name} ---\nPress Enter when the patient is ready to begin the movement. "
             "When finished, press 'n' in the preview window to continue..."
