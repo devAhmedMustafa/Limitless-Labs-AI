@@ -45,6 +45,7 @@ class PoseAnalyzer:
         if not self.display and duration_seconds <= 0:
             raise ValueError("Manual completion mode requires display=True to capture key presses.")
 
+        window_title = f"SkeletonScan - {joint.name}"
         start_time = time.time()
         raw_angles: List[float] = []
         timestamps: List[float] = []
@@ -115,7 +116,7 @@ class PoseAnalyzer:
                     (255, 255, 0),
                     2,
                 )
-                cv2.imshow(f"SkeletonScan - {joint.name}", output_frame)
+                cv2.imshow(window_title, output_frame)
                 key = cv2.waitKey(1) & 0xFF
                 if key in (ord("n"), ord("N"), 13):
                     break
@@ -124,6 +125,8 @@ class PoseAnalyzer:
 
         metrics = self._calculate_metrics(joint.name, raw_angles, timestamps)
         self._smoothed_angle = None
+        if self.display:
+            cv2.destroyWindow(window_title)
         return metrics
 
     def close(self) -> None:
@@ -138,6 +141,26 @@ class PoseAnalyzer:
 
     def __exit__(self, exc_type, exc, tb) -> None:
         self.close()
+
+    def show_preview(self, joint: JointDefinition, message: str = "") -> None:
+        if not self.display:
+            return
+        ret, frame = self.cap.read()
+        if not ret:
+            return
+        frame = cv2.flip(frame, 1)
+        overlay = message or "Press Enter in terminal to begin"
+        cv2.putText(
+            frame,
+            overlay,
+            (10, 40),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.7,
+            (255, 255, 0),
+            2,
+        )
+        cv2.imshow(f"SkeletonScan - {joint.name}", frame)
+        cv2.waitKey(1)
 
     @staticmethod
     def _landmarks_visible(landmarks, joint: JointDefinition, threshold: float) -> bool:
