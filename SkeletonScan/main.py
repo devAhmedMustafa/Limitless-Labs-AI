@@ -3,6 +3,7 @@ import mediapipe as mp
 import numpy as np
 import time
 
+
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 
@@ -30,6 +31,7 @@ def draw_angle_arc(image, a, b, c, angle, color=(0,255,0)):
     cv2.ellipse(image, center, (radius, radius), 0, start, end, color, 2)
 
 cap = cv2.VideoCapture(0)
+
 prev_time = time.time()
 smoothed_angle = None
 alpha = 0.2  # smoothing factor
