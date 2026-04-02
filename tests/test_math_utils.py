@@ -1,5 +1,7 @@
 import unittest
-from SkeletonScan.main import calc_angle
+
+from src.core.math_utils import calc_angle
+
 
 class TestCalcAngle(unittest.TestCase):
     def test_right_angle(self):
@@ -29,3 +31,7 @@ class TestCalcAngle(unittest.TestCase):
         c = (1, 0)
         angle = calc_angle(a, b, c)
         self.assertAlmostEqual(angle, 135.0, places=5)
+
+
+if __name__ == "__main__":
+    unittest.main()

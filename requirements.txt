@@ -1,0 +1,6 @@
+google-generativeai
+mediapipe==0.10.9
+numpy==1.26.4
+opencv-python==4.10.0.84
+python-dotenv==1.0.1
+reportlab==4.2.2
